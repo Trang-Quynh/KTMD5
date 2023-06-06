@@ -12,27 +12,7 @@ export function Home() {
     return (
         <>
             <Header/><br/>
-            <Formik
-                initialValues={{
-                    search: '',
-                }}>
-                {({values, setFieldValue}) => (
-                    <Form>
-                        <Field
-                            type="text"
-                            name={'search'}
-                            placeholder={'Search...'}
-                            onChange={(event) => {
-                                const {value} = event.target;
-                                setFieldValue('search', value);
-                            }}
-                        />
-                        <Link to={`/home/search?keyword=${values.search}`}>
-                            <button type='submit'>Find</button>
-                        </Link>
-                    </Form>
-                )}
-            </Formik>
+
             <br/>
             <Outlet/>
             <Footer/>

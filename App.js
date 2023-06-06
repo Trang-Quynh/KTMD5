@@ -5,6 +5,7 @@ import {Home} from "./pages/Home";
 import {List} from "./pages/List";
 import {Edit} from "./pages/Edit";
 import {Search} from "./pages/Search"
+import {Detail} from "./pages/Detail";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path={'/home'} element={<Home/>}>
             <Route path={'/home/list'} element={<List/>}/>
+            <Route path={'/home/detail/:id'} element={<Detail/>}/>
             <Route path={'/home/search'} element={<Search/>}/>
             <Route path={'/home/create'} element={<Create/>}/>
             <Route path={'/home/edit/:id'} element={<Edit/>}/>

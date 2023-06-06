@@ -38,7 +38,7 @@ export function Create() {
                 <p style={{ color: 'red' }}><ErrorMessage name="price" /></p>
                 <Field type="text" name="description" placeholder="description" /><br/>
                 <p style={{ color: 'red' }}><ErrorMessage name="description" /></p>
-                <button type='submit'>Add</button>
+                <button type='submit' className={"btn btn-primary"}>Add</button>
             </Form>
         </Formik>
     );

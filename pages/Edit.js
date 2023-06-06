@@ -89,7 +89,7 @@ export function Edit() {
 
 
 
-                            <button type="submit">Edit</button>
+                            <button className={"btn btn-primary"} type="submit">Edit</button>
                         </Form>
                     )}
                 </Formik>
