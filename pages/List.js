@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteProduct, getProducts} from "../service/productService";
+import Swal from 'sweetalert2'
 
 export function List() {
     // gui request
@@ -78,7 +79,6 @@ export function List() {
                                     <td >{item.id}</td>
                                     <td > <Link
                                         to={`/home/detail/${item.id}`}
-                                        className={"btn btn-primary"}
                                     >
                                         {item.title}
                                     </Link></td>
