@@ -2,21 +2,20 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {addProduct, getCategories, getOneProduct, updateOneProduct} from "../service/productService";
+import {getOneProduct, updateOneProduct} from "../service/productService";
 import * as Yup from "yup";
-import {logDOM} from "@testing-library/react";
+
 
 const SchemaError = Yup.object().shape({
-    // id: Yup.number()
-    //     .min(2, "Too Short!")
-    //     .required("Required"),
-    name: Yup.string()
+    title: Yup.string()
         .min(2, "Quá ngắn")
         .required("Required"),
-    // description: Yup.string()
-    //     .min(2, "Quá ngắn")
-    //     .required("Required")
+    price: Yup.number()
+        .required("Required"),
+    description: Yup.string()
+        .required("Required"),
 });
+
 
 
 
@@ -42,10 +41,6 @@ export function Edit() {
             setProductFetched(true)
         });
     }, [id]);
-    useEffect(() => {
-        dispatch(getCategories());
-    }, []);
-
 
     return (
         <>
@@ -53,10 +48,9 @@ export function Edit() {
                 <Formik
                     initialValues={{
                         id: currentProduct.id,
-                        name: currentProduct.name,
+                        title: currentProduct.title,
                         price: currentProduct.price,
-                        quantity: currentProduct.quantity,
-                        category:currentProduct.category
+                        description: currentProduct.description,
                     }}
                     validationSchema={SchemaError}
                     onSubmit={(values) => {
@@ -69,12 +63,12 @@ export function Edit() {
                         <Form>
                             <Field
                                 type="text"
-                                name="name"
-                                value={values.name}
-                                onChange={(e) => setFieldValue("name", e.target.value)}
+                                name="title"
+                                value={values.title}
+                                onChange={(e) => setFieldValue("title", e.target.value)}
                             />
                             <p style={{color: "red"}}>
-                                <ErrorMessage name="name"/>
+                                <ErrorMessage name="title"/>
                             </p>
                             <Field
                                 type="number"
@@ -85,20 +79,16 @@ export function Edit() {
                                 }
                             /><br/><br/>
                             <Field
-                                type="number"
-                                name="quantity"
-                                value={values.quantity}
+                                type="text"
+                                name="description"
+                                value={values.description}
                                 onChange={(e) =>
-                                    setFieldValue("quantity", e.target.value)
+                                    setFieldValue("description", e.target.value)
                                 }
                             /><br/><br/>
-                            <Field as="select" name="category" placeholder="category">
-                                <option value={values.category.id}>Category</option>
 
-                                {categories.map((item) =>(
-                                    <option value={item.id}>{item.name}</option>)
-                                )}
-                            </Field><br/>
+
+
                             <button type="submit">Edit</button>
                         </Form>
                     )}
