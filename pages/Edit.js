@@ -7,6 +7,7 @@ import storage from "../firebase/storage";
 import * as Yup from "yup";
 import {getCategories, getOneProduct, updateOneProduct} from "../service/productService";
 import React from 'react';
+import './edit.css'
 
 const SchemaError = Yup.object().shape({
     name: Yup.string()
@@ -23,6 +24,8 @@ export function Edit() {
     const [files, setFiles] = useState([]);
     const navigate = useNavigate();
     let { id } = useParams();
+    const [isDelete, setIsDelete] = useState(true)
+
     const dispatch = useDispatch();
     const currentProduct = useSelector(({products})=>{
         return products.currentProduct;
@@ -67,11 +70,17 @@ export function Edit() {
 
         try {
             const imageUrls = await Promise.all(uploadPromises);
-            setFieldValue("images", [...currentProduct.images, ...imageUrls]);
+            setFieldValue("images", [...imageUrls]);
             setFiles([]);
         } catch (error) {
             console.error(error);
         }
+    };
+
+
+    const handleDeleteAllImages = (setFieldValue) => {
+        setFieldValue("images", []);
+        setIsDelete(false)
     };
 
     return (
@@ -88,7 +97,6 @@ export function Edit() {
                     }}
                     validationSchema={SchemaError}
                     onSubmit={(values) => {
-                        console.log(values)
                         dispatch(updateOneProduct(values)).then(() => {
                             navigate('/home/list');
                         });
@@ -135,13 +143,37 @@ export function Edit() {
                             </p>
 
                             <div>
-                                <Field type="file" multiple name={'myImage'}  onChange={(e) =>{handleChange(e, setFieldValue)}} accept="/image/*" />
-                                {console.log(values.images)}
-                                {values.images.map((image, index) => (
-                                    <div key={index}>
-                                        <img src={image.url} width="20px" alt={''} />
-                                    </div>
-                                ))}
+                                <div>
+                                    <Field name="myImage">
+                                        {(props) => (
+                                            <input
+                                                {...props.field}
+                                                type="file"
+                                                id="myImage"
+                                                multiple
+                                                name="myImage"
+                                                onChange={(e) => { handleChange(e, setFieldValue) }}
+                                                accept="image/*"
+                                                disabled={isDelete}
+                                            />
+                                        )}
+                                    </Field>
+                                </div>
+                                <div className="image-container" >
+                                    {console.log(values.images)}
+                                    {values.images.map((image, index) => (
+                                        <div key={index} className="image">
+                                            {image.url ? (
+                                                <img src={image.url} alt="" />
+                                            ) : (
+                                                <img src={image} alt="" />
+                                            )}
+                                        </div>
+                                    ))}
+                                    {values.images.length > 0 &&
+                                        <button className="delete-all" onClick={() => handleDeleteAllImages(setFieldValue)}>x</button>
+                                    }
+                                </div>
                             </div>
                             <button type="submit">Edit</button>
                         </Form>
@@ -151,5 +183,10 @@ export function Edit() {
         </>
     );
 }
+
+
+
+// Sửa nốt: nếu xóa tất cả các ảnh thì xóa ở trên database các ảnh có id là của product và thêm vào database các ảnh mới
+// nếu không xóa ảnh thì các ảnh trên database vẫn là ảnh đó, chỉ cập nhật lại tên và description, category
 
 
