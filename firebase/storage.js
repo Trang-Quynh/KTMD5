@@ -3,6 +3,7 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
     apiKey: "AIzaSyCJe0l2QrmIhsjsNI_hn-aKNF7oY0_ZnxE",
     authDomain: "crud-8adf5.firebaseapp.com",
+    databaseURL: 'gs://crud-8adf5.appspot.com',
     projectId: "crud-8adf5",
     storageBucket: "crud-8adf5.appspot.com",
     messagingSenderId: "405629308956",

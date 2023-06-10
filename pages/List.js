@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteProduct, getProducts} from "../service/productService";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+
 
 export function List() {
     // gui request
@@ -59,14 +60,18 @@ export function List() {
                                 Id
                             </th>
                             <th scope="col" style={{ textAlign: 'center' }}>
-                                Name
+                                name
                             </th>
                             <th scope="col" style={{ textAlign: 'center' }}>
-                                Price
+                                description
                             </th>
-                            <th scope="col" style={{ textAlign: 'center' }}>
-                                Description
-                            </th>
+
+                            {products && products.images && (
+                                <th scope="col" colSpan={products.images.length} style={{ textAlign: 'center' }}>
+                                images
+                                </th>)
+                            }
+
                             <th scope="col" colSpan={2} style={{ textAlign: 'center' }}>
                                 Action
                             </th>
@@ -80,12 +85,12 @@ export function List() {
                                     <td > <Link
                                         to={`/home/detail/${item.id}`}
                                     >
-                                        {item.title}
+                                        {item.name}
                                     </Link></td>
-                                    <td >{item.price}</td>
-                                    <td>
-                                        {item.description}
-                                    </td>
+                                    <td >{item.description}</td>
+                                    {item.images.map(image =>(
+                                        <td ><img src={image.url} alt="" style={{width:40, height: 40}}/></td>
+                                        ))}
                                     <td>
                                         <Link
                                             to={`/home/edit/${item.id}`}
@@ -113,11 +118,6 @@ export function List() {
             )}
         </>
     );
-
-
-
-
-
 }
 
 

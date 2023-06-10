@@ -11,9 +11,7 @@ export function Home() {
 
     return (
         <>
-            <Header/><br/>
-
-            <br/>
+            <Header/>
             <Outlet/>
             <Footer/>
         </>
