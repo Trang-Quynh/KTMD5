@@ -94,7 +94,7 @@ export function Create() {
             const imageUrls = await Promise.all(uploadPromises);
             formik.setFieldValue("images", [...formik.values.images, ...imageUrls]);
             setIsSubmit(false)
-             setFiles([]);
+            setFiles([]);
         } catch (error) {
             setIsSubmit(false)
             console.error(error);

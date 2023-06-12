@@ -14,6 +14,7 @@ const initialState = {
     currentProduct: null
 }
 
+
 const productSlice = createSlice(
     {
         name: 'Product',
@@ -37,23 +38,22 @@ const productSlice = createSlice(
                             index = i;
                         }
                     }
-                    currentState.list.splice(index, 1)
+                    currentState.list.splice(index, 1);
             })
             builder.addCase(getOneProduct.fulfilled, (currentState, action)=>{
                 console.log(action.payload)
                 currentState.currentProduct = action.payload;
             })
-
             builder.addCase(updateOneProduct.fulfilled, (currentState, action) =>{
-                  let Product = action.payload;
-                  let id = Product.id;
+                  let product = action.payload;
+                  let id = product.id;
                   let index = -1;
                   for (let i = 0; i < currentState.list.length; i++) {
                       if(currentState.list[i].id === id){
                           index = i;
                       }
                   }
-                  currentState.list[index] = Product;
+                  currentState.list[index] = product;
             })
             builder.addCase(getSearchProducts.fulfilled, (currentState, action)=>{
                 currentState.listSearch = action.payload;

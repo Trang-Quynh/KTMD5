@@ -24,17 +24,27 @@ export function Edit() {
     const [files, setFiles] = useState([]);
     const navigate = useNavigate();
     let { id } = useParams();
-    const [isDelete, setIsDelete] = useState(true)
+    const [isDelete, setIsDelete] = useState(true);
+    const [isSubmit, setIsSubmit] = useState(false)
+    const [productFetched, setProductFetched] = useState(false)
+
+
 
     const dispatch = useDispatch();
     const currentProduct = useSelector(({products})=>{
-        return products.currentProduct;
+        if(productFetched === true){
+            console.log(products.currentProduct);
+            return products.currentProduct;
+        }
+        return null
     })
     const listCategory = useSelector(({products})=>{
         return products.listCategory
     })
     useEffect(() => {
-        dispatch(getOneProduct(id));
+        dispatch(getOneProduct(id)).then(()=>{
+            setProductFetched(true)
+        });
         dispatch(getCategories())
     }, [dispatch,id]);
 
@@ -71,6 +81,7 @@ export function Edit() {
         try {
             const imageUrls = await Promise.all(uploadPromises);
             setFieldValue("images", [...imageUrls]);
+            setIsSubmit(false)
             setFiles([]);
         } catch (error) {
             console.error(error);
@@ -80,6 +91,7 @@ export function Edit() {
 
     const handleDeleteAllImages = (setFieldValue) => {
         setFieldValue("images", []);
+        setIsSubmit(true)
         setIsDelete(false)
     };
 
@@ -97,6 +109,7 @@ export function Edit() {
                     }}
                     validationSchema={SchemaError}
                     onSubmit={(values) => {
+                        console.log(values)
                         dispatch(updateOneProduct(values)).then(() => {
                             navigate('/home/list');
                         });
@@ -160,7 +173,6 @@ export function Edit() {
                                     </Field>
                                 </div>
                                 <div className="image-container" >
-                                    {console.log(values.images)}
                                     {values.images.map((image, index) => (
                                         <div key={index} className="image">
                                             {image.url ? (
@@ -175,7 +187,7 @@ export function Edit() {
                                     }
                                 </div>
                             </div>
-                            <button type="submit">Edit</button>
+                            <button disabled={isSubmit} type="submit">Edit</button>
                         </Form>
                     )}
                 </Formik>
@@ -186,7 +198,8 @@ export function Edit() {
 
 
 
-// Sửa nốt: nếu xóa tất cả các ảnh thì xóa ở trên database các ảnh có id là của product và thêm vào database các ảnh mới
-// nếu không xóa ảnh thì các ảnh trên database vẫn là ảnh đó, chỉ cập nhật lại tên và description, category
+
+
+
 
 
